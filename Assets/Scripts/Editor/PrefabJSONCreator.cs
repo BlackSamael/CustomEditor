@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PrefabJSONCreator : EditorWindow
@@ -12,49 +13,117 @@ public class PrefabJSONCreator : EditorWindow
     public ObjectDataHolder objectDataHolder;
     public string jsonText = "";
     public string fileName = string.Empty;
+    public string filepath = string.Empty;
+    private const string jsonFilePath = "Assets/Saved JSONs";
 
-    [MenuItem("Create Prefab/Generate Window")]
+    [MenuItem("Create Template/Template Window")]
     public static void ShowWindow()
     {
-        GetWindow<PrefabJSONCreator>(false, "Prefab Window Creator", true);
+        GetWindow<PrefabJSONCreator>(false, "Template Window Creator", true);
     }
+
     private void OnGUI()
     {
         GUILayout.Label("File Name: ");
 
-        fileName = (GUILayout.TextField(fileName, GUILayout.Width(300), GUILayout.Height(50)));
+        fileName = (GUILayout.TextField(fileName));
 
-        if (GUILayout.Button("Create Json", GUILayout.Width(100), GUILayout.Height(30)))
+        if (GUILayout.Button("Create Json from GameObject"))
         {
             ConvertToJson(fileName);
+            AssetDatabase.Refresh();
+        }
+        GUILayout.Space(10);
+
+        GUILayout.Label("File Path To generate From: ");
+        filepath = (GUILayout.TextField(filepath));
+        if (GUILayout.Button("Generate From JSON"))
+        {
+            LoadDataFromTemplate(true);
         }
 
-        if (GUILayout.Button("Generate Json", GUILayout.Width(100), GUILayout.Height(30)))
+        GUILayout.Space(10);
+        if (GUILayout.Button("Instantiate from Scriptable Object"))
         {
-            ConvertToJson();
-        }
-        if (GUILayout.Button("Instantiate", GUILayout.Width(100), GUILayout.Height(30)))
-        {
-            LoadDataFromTemplate();
+            LoadDataFromTemplate(false);
         }
 
+        GUILayout.Space(10);
+        if (GUILayout.Button("Convert the Json to ScriptableObject for modifications"))
+        {
+            if (string.IsNullOrEmpty(filepath))
+            {
+                EditorUtility.DisplayDialog("File not Found", "The given filePath is Invalid. Please check the filepath again.", "Ok");
+            }
+            else
+            {
+                jsonText = File.ReadAllText(filepath);
+
+                objectDataHolder = Resources.Load("Template") as ObjectDataHolder;
+                JsonUtility.FromJsonOverwrite(jsonText, objectDataHolder.objectData);
+                EditorUtility.DisplayDialog("File Ready for Modification", "Please modify the file of type Scriptable Object Named \"Template\" from the Assets for modification.", "Ok");
+            }
+        }
+
+
+        if (GUILayout.Button("Reset the Template"))
+        {
+            objectDataHolder = Resources.Load("Template") as ObjectDataHolder;
+            objectDataHolder.objectData = null;
+            objectDataHolder.objectData = new RectTransformDataOfObject();
+        }
     }
 
-
-    public void LoadDataFromTemplate()
+    public void LoadDataFromTemplate(bool useJson)
     {
         var allTags = UnityEditorInternal.InternalEditorUtility.tags;
 
-        objectDataHolder = Resources.Load("Template") as ObjectDataHolder;
+        if (useJson)
+        {
+            if (filepath.Contains(".json"))
+            {
+                if (File.Exists(filepath))
+                {
+                    objectDataHolder = CreateInstance<ObjectDataHolder>();
+
+                    jsonText = File.ReadAllText(filepath);
+                    objectDataHolder.objectData = new RectTransformDataOfObject();
+
+                    try
+                    {
+                        JsonUtility.FromJsonOverwrite(jsonText, objectDataHolder.objectData);
+                    }
+                    catch (Exception e)
+                    {
+
+                        EditorUtility.DisplayDialog("Invalid JSON Exception", "Loaded JSON file is invalid. Please check", "Ok");
+                        throw new InvalidDataException();
+                    }
+                }
+                else
+                {
+                    EditorUtility.DisplayDialog("Invalid File Exception", "The given filePath is invalid. Please check the filepath again.", "Ok");
+
+                    throw new NullReferenceException("File Name is Invalid");
+                }
+            }
+
+        }
+        else
+            objectDataHolder = Resources.Load("Template") as ObjectDataHolder;
 
         var canvas = FindAnyObjectByType<Canvas>();
 
         if (canvas == null)
         {
+            GameObject eventSys = new GameObject("EventSystem", typeof(StandaloneInputModule), typeof(EventSystem));
+
             GameObject gO = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             canvas = gO.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.vertexColorAlwaysGammaSpace = true;
+
+
         }
 
         var objectData = objectDataHolder.objectData;
@@ -72,7 +141,7 @@ public class PrefabJSONCreator : EditorWindow
         {
             Destroy(rootObject);
             EditorUtility.DisplayDialog("Tag Error", "\"" + objectData.tag + "\" This tag doesn't exist in Tag Manager. Kindly Add it in tag manager before creating prefab", "Okay");
-            return;
+            throw new InvalidDataException();
         }
         else
         {
@@ -248,7 +317,6 @@ public class PrefabJSONCreator : EditorWindow
     {
         var allTags = UnityEditorInternal.InternalEditorUtility.tags;
 
-        //objectData = Resources.Load("Template") as ObjectDataHolder;
         var objectData = CreateInstance<ObjectDataHolder>();
         var selectedObjectData = new RectTransformDataOfObject();
         UnityEngine.Object object1 = null;
@@ -437,5 +505,4 @@ public class PrefabJSONCreator : EditorWindow
         }
 
     }
-    string jsonFilePath = "Assets/Saved JSONs";
 }

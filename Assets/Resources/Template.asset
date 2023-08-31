@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Template
   m_EditorClassIdentifier: 
   objectData:
-    name: we
+    name: 
     layer: 0
     tag: 
     position: {x: 0, y: 0, z: 0}
@@ -31,11 +31,11 @@ MonoBehaviour:
       height: 0
     imageData:
       instanceId: 0
-      doesExist: 1
+      doesExist: 0
       color:
         serializedVersion: 2
-        rgba: 6974125
-      imagePath: Assets/Circle.png
+        rgba: 0
+      imagePath: 
     rawImageData:
       instanceId: 0
       doesExist: 0
