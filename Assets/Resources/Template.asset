@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd51c649093f84d4c9079647d58b47be, type: 3}
+  m_Name: Template
+  m_EditorClassIdentifier: 
+  objectData:
+    name: we
+    layer: 0
+    tag: 
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 0, y: 0, z: 0}
+    pivot: {x: 0, y: 0}
+    anchors:
+      min: {x: 0, y: 0}
+      max: {x: 0, y: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    imageData:
+      instanceId: 0
+      doesExist: 1
+      color:
+        serializedVersion: 2
+        rgba: 6974125
+      imagePath: Assets/Circle.png
+    rawImageData:
+      instanceId: 0
+      doesExist: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
+      imagePath: 
+    sliderData:
+      doesExist: 0
+      transitionType: 0
+      colorBlockData:
+        normalColor: {r: 0, g: 0, b: 0, a: 0}
+        highlightedColor: {r: 0, g: 0, b: 0, a: 0}
+        pressedColor: {r: 0, g: 0, b: 0, a: 0}
+        selectedColor: {r: 0, g: 0, b: 0, a: 0}
+        disabledColor: {r: 0, g: 0, b: 0, a: 0}
+        colorMultiplier: 0
+        fadeDuration: 0
+      spriteStateData:
+        disabledSprite: 
+        selectedSprite: 
+        pressedSprite: 
+        highlightedSprite: 
+      animationTriggersData:
+        m_NormalTrigger: Normal
+        m_HighlightedTrigger: Highlighted
+        m_PressedTrigger: Pressed
+        m_SelectedTrigger: Selected
+        m_DisabledTrigger: Disabled
+      targetGraphicInstanceId: 0
+      value: 0
+      minValue: 0
+      maxValue: 0
+      isWholeNumber: 0
+      direction: 0
+      fillRectInstanceId: 0
+      handleRectInstanceId: 0
+    childData: []
