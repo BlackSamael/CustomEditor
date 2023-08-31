@@ -14,13 +14,13 @@ Text field is used for giving the Json fileName which the user wants to save in 
 
 Button Functionality are as follows:
 
-**Create JSON**: Convert a Gameobject to JSON and save it in the Assets with the fileName given.
+1. **Create JSON**: Convert a Gameobject to JSON and save it in the Assets with the fileName given.
 
-**Generate From JSON**: Convert a Json to a gameobject
+2. **Generate From JSON**: Convert a Json to a gameobject
 
-**Instantiate from Scriptable Object**: Generate From Scriptable Object
+3. **Instantiate from Scriptable Object**: Generate From Scriptable Object
 
-**Convert the Json to ScriptableObject for modifications**: Convert the existing json to Scriptable Object for Modifying
+4. **Convert the Json to ScriptableObject for modifications**: Convert the existing json to Scriptable Object for Modifying
 
 
 
